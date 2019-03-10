@@ -1,0 +1,6 @@
+.idea/
+vendor/
+build/
+composer.lock
+.DS_Store*
+t*.php

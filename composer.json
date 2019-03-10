@@ -1,0 +1,19 @@
+{
+    "name": "mcmatters/upwork-api",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dmitry Borzyonok",
+            "email": "dima.matters@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "mcmatters/ticl": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "McMatters\\UpworkApi\\": "src/"
+        }
+    }
+}
