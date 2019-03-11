@@ -6,8 +6,8 @@ namespace McMatters\UpworkApi\Helpers;
 
 use McMatters\UpworkApi\Endpoints\Endpoint;
 use const true;
-use function base64_encode, hash_hmac, implode, ksort, rawurlencode, strtoupper,
-    time, uniqid;
+use function base64_encode, hash_hmac, implode, ksort, rawurlencode, strpos,
+    strtoupper, time, uniqid;
 
 /**
  * Class OAuth
@@ -20,7 +20,7 @@ class OAuth
      * @param \McMatters\UpworkApi\Endpoints\Endpoint $endpoint
      * @param string $method
      * @param string $url
-     * @param array $query
+     * @param array $options
      *
      * @return string
      */
@@ -28,7 +28,7 @@ class OAuth
         Endpoint $endpoint,
         string $method,
         string $url,
-        array $query = []
+        array $options = []
     ): string {
         $nonce = uniqid('', true);
         $timestamp = time();
@@ -36,16 +36,26 @@ class OAuth
         $version = '1.0';
         $baseData = [];
 
+        $token = $endpoint->getToken();
+        $secret = $endpoint->getSecret();
+
         $baseParts = [
             'oauth_consumer_key' => rawurlencode($endpoint->getConsumerKey()),
             'oauth_nonce' => rawurlencode($nonce),
             'oauth_signature_method' => rawurlencode($signatureMethod),
             'oauth_timestamp' => rawurlencode((string) $timestamp),
-            'oauth_token' => rawurlencode($endpoint->getToken()),
             'oauth_version' => rawurlencode($version),
         ];
 
-        foreach ($query as $queryKey => $queryData) {
+        if (null !== $token) {
+            $baseParts['oauth_token'] = $token;
+        }
+
+        if (!empty($options['headers']['oauth_verifier'])) {
+            $baseParts['oauth_verifier'] = $options['headers']['oauth_verifier'];
+        }
+
+        foreach ($options['query'] ?? [] as $queryKey => $queryData) {
             $baseParts[$queryKey] = rawurlencode($queryData);
         }
 
@@ -57,18 +67,29 @@ class OAuth
 
         $signature = self::generateSignature(
             strtoupper($method).'&'.rawurlencode($url).'&'.rawurlencode(implode('&', $baseData)),
-            rawurlencode($endpoint->getConsumerSecret()).'&'.rawurlencode($endpoint->getSecret())
+            rawurlencode($endpoint->getConsumerSecret()).'&'.rawurlencode($secret ?? '')
         );
 
-        return 'OAuth '.implode(',', [
-                "oauth_token={$endpoint->getToken()}",
-                "oauth_nonce={$nonce}",
-                "oauth_consumer_key={$endpoint->getConsumerKey()}",
-                "oauth_signature_method={$signatureMethod}",
-                "oauth_timestamp={$timestamp}",
-                "oauth_version={$version}",
-                "oauth_signature={$signature}",
-            ]);
+        $oauthPayload = [
+            "oauth_nonce={$nonce}",
+            "oauth_consumer_key={$endpoint->getConsumerKey()}",
+            "oauth_signature_method={$signatureMethod}",
+            "oauth_timestamp={$timestamp}",
+            "oauth_version={$version}",
+            "oauth_signature={$signature}",
+        ];
+
+        if ($token) {
+            $oauthPayload[] = "oauth_token={$token}";
+        }
+
+        foreach ($options['headers'] ?? [] as $headerKey => $headerValue) {
+            if (strpos($headerKey, 'oauth_') === 0) {
+                $oauthPayload[] = "{$headerKey}={$headerValue}";
+            }
+        }
+
+        return 'OAuth '.implode(',', $oauthPayload);
     }
 
     /**

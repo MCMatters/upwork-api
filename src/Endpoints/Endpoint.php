@@ -59,20 +59,13 @@ abstract class Endpoint
         $this->secret = $secret;
         $this->consumerKey = $consumerKey;
         $this->consumerSecret = $consumerSecret;
-
-        $this->httpClient = new Client([
-            'base_uri' => 'https://www.upwork.com/',
-            'headers' => [
-                'Accept' => 'application/json',
-                'Content-type' => 'application/json',
-            ],
-        ]);
+        $this->setHttpClient();
     }
 
     /**
      * @return string
      */
-    public function getToken(): string
+    public function getToken(): ?string
     {
         return $this->token;
     }
@@ -80,7 +73,7 @@ abstract class Endpoint
     /**
      * @return string
      */
-    public function getSecret(): string
+    public function getSecret(): ?string
     {
         return $this->secret;
     }
@@ -119,7 +112,7 @@ abstract class Endpoint
             $this,
             $method,
             $this->httpClient->getFullUrl($url),
-            $options['query'] ?? []
+            $options
         );
 
         return $this->httpClient
@@ -148,5 +141,19 @@ abstract class Endpoint
         array $options = []
     ): array {
         return $this->request($method, $url, $options)->json();
+    }
+
+    /**
+     * @return void
+     */
+    protected function setHttpClient(): void
+    {
+        $this->httpClient = new Client([
+            'base_uri' => 'https://www.upwork.com/',
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-type' => 'application/json',
+            ],
+        ]);
     }
 }
