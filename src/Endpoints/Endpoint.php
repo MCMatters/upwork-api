@@ -7,6 +7,7 @@ namespace McMatters\UpworkApi\Endpoints;
 use McMatters\Ticl\Client;
 use McMatters\Ticl\Http\Response;
 use McMatters\UpworkApi\Helpers\OAuth;
+use const PHP_QUERY_RFC3986;
 use function array_merge_recursive;
 
 /**
@@ -153,6 +154,9 @@ abstract class Endpoint
             'headers' => [
                 'Accept' => 'application/json',
                 'Content-type' => 'application/json',
+            ],
+            'query_params' => [
+                'enc_type' => PHP_QUERY_RFC3986,
             ],
         ]);
     }
