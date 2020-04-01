@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace McMatters\UpworkApi\Endpoints;
 
@@ -16,6 +16,7 @@ class EarningReport extends Endpoint
      * @param array $query
      *
      * @return array
+     *
      * @throws \InvalidArgumentException
      * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
      * @throws \McMatters\Ticl\Exceptions\RequestException
@@ -34,6 +35,7 @@ class EarningReport extends Endpoint
      * @param array $query
      *
      * @return array
+     *
      * @throws \InvalidArgumentException
      * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
      * @throws \McMatters\Ticl\Exceptions\RequestException
@@ -48,10 +50,11 @@ class EarningReport extends Endpoint
     }
 
     /**
-     * @param $buyerCompanyReference
+     * @param int|string $buyerCompanyReference
      * @param array $query
      *
      * @return array
+     *
      * @throws \InvalidArgumentException
      * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
      * @throws \McMatters\Ticl\Exceptions\RequestException

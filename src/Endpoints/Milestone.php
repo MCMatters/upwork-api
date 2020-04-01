@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace McMatters\UpworkApi\Endpoints;
 
@@ -15,6 +15,7 @@ class Milestone extends Endpoint
      * @param int|string $contractReference
      *
      * @return array
+     *
      * @throws \InvalidArgumentException
      * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
      * @throws \McMatters\Ticl\Exceptions\RequestException
@@ -32,6 +33,7 @@ class Milestone extends Endpoint
      * @param array $query
      *
      * @return array
+     *
      * @throws \InvalidArgumentException
      * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
      * @throws \McMatters\Ticl\Exceptions\RequestException
@@ -49,6 +51,7 @@ class Milestone extends Endpoint
      * @param array $body
      *
      * @return array
+     *
      * @throws \InvalidArgumentException
      * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
      * @throws \McMatters\Ticl\Exceptions\RequestException
@@ -67,6 +70,7 @@ class Milestone extends Endpoint
      * @param array $body
      *
      * @return array
+     *
      * @throws \InvalidArgumentException
      * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
      * @throws \McMatters\Ticl\Exceptions\RequestException
@@ -85,6 +89,7 @@ class Milestone extends Endpoint
      * @param array $body
      *
      * @return array
+     *
      * @throws \InvalidArgumentException
      * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
      * @throws \McMatters\Ticl\Exceptions\RequestException
@@ -103,6 +108,7 @@ class Milestone extends Endpoint
      * @param array $body
      *
      * @return array
+     *
      * @throws \InvalidArgumentException
      * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
      * @throws \McMatters\Ticl\Exceptions\RequestException
@@ -120,6 +126,7 @@ class Milestone extends Endpoint
      * @param int $id
      *
      * @return array
+     *
      * @throws \InvalidArgumentException
      * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
      * @throws \McMatters\Ticl\Exceptions\RequestException

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace McMatters\UpworkApi\Endpoints;
 
@@ -13,6 +13,7 @@ class User extends Endpoint
 {
     /**
      * @return array
+     *
      * @throws \InvalidArgumentException
      * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
      * @throws \McMatters\Ticl\Exceptions\RequestException
@@ -26,6 +27,7 @@ class User extends Endpoint
      * @param int|string $id
      *
      * @return array
+     *
      * @throws \InvalidArgumentException
      * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
      * @throws \McMatters\Ticl\Exceptions\RequestException
@@ -37,6 +39,7 @@ class User extends Endpoint
 
     /**
      * @return array
+     *
      * @throws \InvalidArgumentException
      * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
      * @throws \McMatters\Ticl\Exceptions\RequestException

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace McMatters\UpworkApi\Endpoints;
 
 /**
- * Class FreelancerApplication
+ * Class Team
  *
  * @package McMatters\UpworkApi\Endpoints
  */
-class FreelancerApplication extends Endpoint
+class Team extends Endpoint
 {
     /**
      * @param array $query
@@ -24,13 +24,13 @@ class FreelancerApplication extends Endpoint
     {
         return $this->requestJson(
             'get',
-            'api/hr/v4/contractors/applications.json',
+            'api/hr/v2/teams.json',
             ['query' => $query]
         );
     }
 
     /**
-     * @param int|string $applicationId
+     * @param int|string $teamReference
      * @param array $query
      *
      * @return array
@@ -39,11 +39,11 @@ class FreelancerApplication extends Endpoint
      * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
      * @throws \McMatters\Ticl\Exceptions\RequestException
      */
-    public function get($applicationId, array $query = []): array
+    public function users($teamReference, array $query = []): array
     {
         return $this->requestJson(
             'get',
-            "api/hr/v4/contractors/applications/{$applicationId}.json",
+            "api/hr/v2/teams/{$teamReference}/users.json",
             ['query' => $query]
         );
     }

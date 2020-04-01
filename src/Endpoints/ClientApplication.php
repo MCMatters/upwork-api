@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace McMatters\UpworkApi\Endpoints;
 
@@ -17,6 +17,7 @@ class ClientApplication extends Endpoint
      * @param array $query
      *
      * @return array
+     *
      * @throws \InvalidArgumentException
      * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
      * @throws \McMatters\Ticl\Exceptions\RequestException
@@ -33,7 +34,7 @@ class ClientApplication extends Endpoint
                 'query' => [
                         'buyer_team__reference' => $buyerTeamReference,
                         'job_key' => $jobKey,
-                    ] + $query,
+                ] + $query,
             ]
         );
     }
@@ -43,6 +44,7 @@ class ClientApplication extends Endpoint
      * @param string $buyerTeamReference
      *
      * @return array
+     *
      * @throws \InvalidArgumentException
      * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
      * @throws \McMatters\Ticl\Exceptions\RequestException

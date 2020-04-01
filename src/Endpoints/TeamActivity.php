@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace McMatters\UpworkApi\Endpoints;
 
+use function implode, is_array;
+
 /**
- * Class Report
+ * Class TeamActivity
  *
  * @package McMatters\UpworkApi\Endpoints
  */
-class Report extends Endpoint
+class TeamActivity extends Endpoint
 {
     /**
      * @param int|string $companyId
@@ -22,11 +24,11 @@ class Report extends Endpoint
      * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
      * @throws \McMatters\Ticl\Exceptions\RequestException
      */
-    public function getHoursByTeam($companyId, $teamId, array $query): array
+    public function list($companyId, $teamId, array $query = []): array
     {
         return $this->requestJson(
             'get',
-            "gds/timereports/v1/companies/{$companyId}/teams/{$teamId}/hours",
+            "api/otask/v1/tasks/companies/{$companyId}/teams/{$teamId}/tasks.json",
             ['query' => $query]
         );
     }
@@ -34,6 +36,7 @@ class Report extends Endpoint
     /**
      * @param int|string $companyId
      * @param int|string $teamId
+     * @param array|string $code
      * @param array $query
      *
      * @return array
@@ -42,18 +45,23 @@ class Report extends Endpoint
      * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
      * @throws \McMatters\Ticl\Exceptions\RequestException
      */
-    public function getByTeam($companyId, $teamId, array $query): array
+    public function getByCode($companyId, $teamId, $code, array $query = []): array
     {
+        $code = is_array($code) ? implode(';', $code) : $code;
+
         return $this->requestJson(
             'get',
-            "gds/timereports/v1/companies/{$companyId}/teams/{$teamId}",
+            "api/otask/v1/tasks/companies/{$companyId}/teams/{$teamId}/tasks/{$code}.json",
             ['query' => $query]
         );
     }
 
     /**
      * @param int|string $companyId
-     * @param array $query
+     * @param int|string $teamId
+     * @param string $code
+     * @param string $description
+     * @param array $data
      *
      * @return array
      *
@@ -61,19 +69,26 @@ class Report extends Endpoint
      * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
      * @throws \McMatters\Ticl\Exceptions\RequestException
      */
-    public function getByCompany($companyId, array $query): array
-    {
+    public function create(
+        $companyId,
+        $teamId,
+        string $code,
+        string $description,
+        array $data = []
+    ): array {
         return $this->requestJson(
-            'get',
-            "gds/timereports/v1/companies/{$companyId}",
-            ['query' => $query]
+            'post',
+            "api/otask/v1/tasks/companies/{$companyId}/teams/{$teamId}/tasks.json",
+            ['json' => ['code' => $code, 'description' => $description] + $data]
         );
     }
 
     /**
      * @param int|string $companyId
-     * @param int|string $agencyId
-     * @param array $query
+     * @param int|string $teamId
+     * @param string $code
+     * @param string $description
+     * @param array $data
      *
      * @return array
      *
@@ -81,18 +96,24 @@ class Report extends Endpoint
      * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
      * @throws \McMatters\Ticl\Exceptions\RequestException
      */
-    public function getByAgency($companyId, $agencyId, array $query): array
-    {
+    public function update(
+        $companyId,
+        $teamId,
+        string $code,
+        string $description,
+        array $data = []
+    ): array {
         return $this->requestJson(
-            'get',
-            "gds/timereports/v1/companies/{$companyId}/agencies/{$agencyId}",
-            ['query' => $query]
+            'put',
+            "api/otask/v1/tasks/companies/{$companyId}/teams/{$teamId}/tasks/{$code}.json",
+            ['json' => ['description' => $description] + $data]
         );
     }
 
     /**
-     * @param int|string $userId
-     * @param array $query
+     * @param int|string $companyId
+     * @param int|string $teamId
+     * @param string $code
      *
      * @return array
      *
@@ -100,18 +121,18 @@ class Report extends Endpoint
      * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
      * @throws \McMatters\Ticl\Exceptions\RequestException
      */
-    public function getHoursByFreelancer($userId, array $query): array
+    public function archive($companyId, $teamId, string $code): array
     {
         return $this->requestJson(
-            'get',
-            "gds/timereports/v1/providers/{$userId}/hours",
-            ['query' => $query]
+            'put',
+            "api/otask/v1/tasks/companies/{$companyId}/teams/{$teamId}/archive/{$code}.json"
         );
     }
 
     /**
-     * @param int|string $userId
-     * @param array $query
+     * @param int|string $companyId
+     * @param int|string $teamId
+     * @param string $code
      *
      * @return array
      *
@@ -119,12 +140,11 @@ class Report extends Endpoint
      * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
      * @throws \McMatters\Ticl\Exceptions\RequestException
      */
-    public function getByFreelancer($userId, array $query): array
+    public function unarchive($companyId, $teamId, string $code): array
     {
         return $this->requestJson(
-            'get',
-            "gds/timereports/v1/providers/{$userId}",
-            ['query' => $query]
+            'put',
+            "api/otask/v1/tasks/companies/{$companyId}/teams/{$teamId}/unarchive/{$code}.json"
         );
     }
 }

@@ -1,11 +1,12 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace McMatters\UpworkApi;
 
 use McMatters\UpworkApi\Endpoints\Authorization;
-use const false, null;
+
+use const false, null, true;
 
 /**
  * Class UpworkAuthClient
@@ -32,6 +33,7 @@ class UpworkAuthClient
 
     /**
      * @return array
+     *
      * @throws \InvalidArgumentException
      * @throws \McMatters\Ticl\Exceptions\RequestException
      */
@@ -45,6 +47,7 @@ class UpworkAuthClient
      * @param bool $inConsole
      *
      * @return string
+     *
      * @throws \InvalidArgumentException
      * @throws \McMatters\Ticl\Exceptions\RequestException
      */
@@ -66,6 +69,7 @@ class UpworkAuthClient
      * @param string $verifier
      *
      * @return array
+     *
      * @throws \InvalidArgumentException
      * @throws \McMatters\Ticl\Exceptions\RequestException
      */
@@ -78,12 +82,15 @@ class UpworkAuthClient
     }
 
     /**
+     * @param bool $inConsole
+     *
      * @return array
+     *
      * @throws \InvalidArgumentException
      * @throws \McMatters\Ticl\Exceptions\RequestException
      */
-    public function authorize(): array
+    public function authorize(bool $inConsole = true): array
     {
-        return $this->auth->authorize();
+        return $this->auth->authorize($inConsole);
     }
 }

@@ -1,11 +1,12 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace McMatters\UpworkApi\Endpoints;
 
-use const false, true;
 use function explode, header, readline, trim;
+
+use const false, true;
 
 /**
  * Class Authorization
@@ -31,6 +32,7 @@ class Authorization extends Endpoint
 
     /**
      * @return array
+     *
      * @throws \InvalidArgumentException
      * @throws \McMatters\Ticl\Exceptions\RequestException
      */
@@ -46,6 +48,7 @@ class Authorization extends Endpoint
      * @param bool $inConsole
      *
      * @return string
+     *
      * @throws \InvalidArgumentException
      */
     public function getVerifier(
@@ -72,6 +75,7 @@ class Authorization extends Endpoint
      * @param string $verifier
      *
      * @return array
+     *
      * @throws \InvalidArgumentException
      * @throws \McMatters\Ticl\Exceptions\RequestException
      */
@@ -93,15 +97,18 @@ class Authorization extends Endpoint
     }
 
     /**
+     * @param bool $inConsole
+     *
      * @return array
+     *
      * @throws \InvalidArgumentException
      * @throws \McMatters\Ticl\Exceptions\RequestException
      */
-    public function authorize(): array
+    public function authorize(bool $inConsole = true): array
     {
         $tokens = $this->getRequestToken();
 
-        $verifier = $this->getVerifier($tokens['oauth_token'], true);
+        $verifier = $this->getVerifier($tokens['oauth_token'], $inConsole);
 
         return $this->getAccessToken(
             $tokens['oauth_token'],

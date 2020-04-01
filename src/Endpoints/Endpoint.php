@@ -1,14 +1,16 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace McMatters\UpworkApi\Endpoints;
 
 use McMatters\Ticl\Client;
 use McMatters\Ticl\Http\Response;
 use McMatters\UpworkApi\Helpers\OAuth;
-use const PHP_QUERY_RFC3986;
+
 use function array_merge_recursive;
+
+use const PHP_QUERY_RFC3986;
 
 /**
  * Class Endpoint
@@ -101,6 +103,7 @@ abstract class Endpoint
      * @param array $options
      *
      * @return \McMatters\Ticl\Http\Response
+     *
      * @throws \InvalidArgumentException
      * @throws \McMatters\Ticl\Exceptions\RequestException
      */
@@ -132,6 +135,7 @@ abstract class Endpoint
      * @param array $options
      *
      * @return array
+     *
      * @throws \InvalidArgumentException
      * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
      * @throws \McMatters\Ticl\Exceptions\RequestException

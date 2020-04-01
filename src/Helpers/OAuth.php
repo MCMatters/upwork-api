@@ -1,13 +1,15 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace McMatters\UpworkApi\Helpers;
 
 use McMatters\UpworkApi\Endpoints\Endpoint;
-use const true;
+
 use function base64_encode, hash_hmac, implode, ksort, rawurlencode, strpos,
     strtoupper, time, uniqid;
+
+use const null, true;
 
 /**
  * Class OAuth
