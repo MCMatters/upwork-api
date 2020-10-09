@@ -12,6 +12,24 @@ namespace McMatters\UpworkApi\Endpoints;
 class Metadata extends Endpoint
 {
     /**
+     * @param string $topic
+     *
+     * @return array
+     *
+     * @throws \InvalidArgumentException
+     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
+     * @throws \McMatters\Ticl\Exceptions\RequestException
+     */
+    public function specialties(string $topic): array
+    {
+        return $this->requestJson(
+            'get',
+            'api/profiles/v1/metadata/specialties.json',
+            ['query' => ['topic' => $topic]]
+        );
+    }
+
+    /**
      * @param array $query
      *
      * @return array
@@ -42,7 +60,7 @@ class Metadata extends Endpoint
     {
         return $this->requestJson(
             'get',
-            'api/profiles/v1/metadata/skills.json',
+            'api/profiles/v2/metadata/skills.json',
             ['query' => $query]
         );
     }
