@@ -55,12 +55,17 @@ class UpworkAuthClient
         string $oauthToken = null,
         bool $inConsole = false
     ): string {
-        if (null === $oauthToken) {
-            $requestToken = $this->getRequestToken();
-            $oauthToken = $requestToken['oauth_token'];
-        }
-
         return $this->auth->getVerifier($oauthToken, $inConsole);
+    }
+
+    /**
+     * @param string|null $oauthToken
+     *
+     * @return string
+     */
+    public function getVerifierUrl(string $oauthToken = null): string
+    {
+        return $this->auth->getVerifierUrl($oauthToken);
     }
 
     /**

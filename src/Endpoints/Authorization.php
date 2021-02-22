@@ -44,7 +44,23 @@ class Authorization extends Endpoint
     }
 
     /**
-     * @param string $token
+     * @param string|null $token
+     *
+     * @return string
+     */
+    public function getVerifierUrl(string $token = null): string
+    {
+        if (null === $token) {
+            $tokens = $this->getRequestToken();
+
+            $token = $tokens['oauth_token'];
+        }
+
+        return $this->httpClient->getFullUrl('services/api/auth')."?oauth_token={$token}";
+    }
+
+    /**
+     * @param string|null $token
      * @param bool $inConsole
      *
      * @return string
@@ -52,10 +68,10 @@ class Authorization extends Endpoint
      * @throws \InvalidArgumentException
      */
     public function getVerifier(
-        string $token,
+        string $token = null,
         bool $inConsole = false
     ): string {
-        $url = $this->httpClient->getFullUrl('services/api/auth')."?oauth_token={$token}";
+        $url = $this->getVerifierUrl($token);
 
         if ($inConsole) {
             return trim(
