@@ -76,7 +76,7 @@ class Authorization extends Endpoint
         if ($inConsole) {
             return trim(
                 readline(
-                    "Please visit\n{$url}\nand paste here 'oauth_verifier' from url\n"
+                    "Please visit \n{$url} \nand paste here 'oauth_verifier' from url\n"
                 )
             );
         }
