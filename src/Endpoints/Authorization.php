@@ -6,7 +6,7 @@ namespace McMatters\UpworkApi\Endpoints;
 
 use function explode, header, readline, trim;
 
-use const false, true;
+use const false, null, true;
 
 /**
  * Class Authorization
@@ -45,23 +45,33 @@ class Authorization extends Endpoint
 
     /**
      * @param string|null $token
+     * @param string|null $callback
      *
      * @return string
      */
-    public function getVerifierUrl(string $token = null): string
-    {
+    public function getVerifierUrl(
+        string $token = null,
+        string $callback = null
+    ): string {
         if (null === $token) {
             $tokens = $this->getRequestToken();
 
             $token = $tokens['oauth_token'];
         }
 
-        return $this->httpClient->getFullUrl('services/api/auth')."?oauth_token={$token}";
+        $url = $this->httpClient->getFullUrl('services/api/auth')."?oauth_token={$token}";
+
+        if (null !== $callback) {
+            $url .= "&oauth_callback={$callback}";
+        }
+
+        return $url;
     }
 
     /**
      * @param string|null $token
      * @param bool $inConsole
+     * @param string|null $callback
      *
      * @return string
      *
@@ -69,14 +79,15 @@ class Authorization extends Endpoint
      */
     public function getVerifier(
         string $token = null,
-        bool $inConsole = false
+        bool $inConsole = false,
+        string $callback = null
     ): string {
-        $url = $this->getVerifierUrl($token);
+        $url = $this->getVerifierUrl($token, $callback);
 
         if ($inConsole) {
             return trim(
                 readline(
-                    "Please visit \n{$url} \nand paste here 'oauth_verifier' from url\n"
+                    "Please visit\n{$url}\nand paste here 'oauth_verifier' from url \n"
                 )
             );
         }
@@ -114,17 +125,18 @@ class Authorization extends Endpoint
 
     /**
      * @param bool $inConsole
+     * @param string|null $callback
      *
      * @return array
      *
      * @throws \InvalidArgumentException
      * @throws \McMatters\Ticl\Exceptions\RequestException
      */
-    public function authorize(bool $inConsole = true): array
+    public function authorize(bool $inConsole = true, string $callback = null): array
     {
         $tokens = $this->getRequestToken();
 
-        $verifier = $this->getVerifier($tokens['oauth_token'], $inConsole);
+        $verifier = $this->getVerifier($tokens['oauth_token'], $inConsole, $callback);
 
         return $this->getAccessToken(
             $tokens['oauth_token'],

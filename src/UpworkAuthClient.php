@@ -60,12 +60,15 @@ class UpworkAuthClient
 
     /**
      * @param string|null $oauthToken
+     * @param string|null $callback
      *
      * @return string
      */
-    public function getVerifierUrl(string $oauthToken = null): string
-    {
-        return $this->auth->getVerifierUrl($oauthToken);
+    public function getVerifierUrl(
+        string $oauthToken = null,
+        string $callback = null
+    ): string {
+        return $this->auth->getVerifierUrl($oauthToken, $callback);
     }
 
     /**
