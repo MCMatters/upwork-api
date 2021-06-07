@@ -85,11 +85,9 @@ class Authorization extends Endpoint
         $url = $this->getVerifierUrl($token, $callback);
 
         if ($inConsole) {
-            return trim(
-                readline(
-                    "Please visit\n{$url}\nand paste here 'oauth_verifier' from url \n"
-                )
-            );
+            echo "Please visit\n{$url}\nand paste here 'oauth_verifier' from url \n";
+
+            return trim(readline());
         }
 
         header("Location: {$url}");

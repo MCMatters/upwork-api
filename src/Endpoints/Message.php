@@ -141,6 +141,26 @@ class Message extends Endpoint
     /**
      * @param int|string $companyId
      * @param int|string $roomId
+     * @param array $query
+     *
+     * @return array
+     *
+     * @throws \InvalidArgumentException
+     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
+     * @throws \McMatters\Ticl\Exceptions\RequestException
+     */
+    public function messages($companyId, $roomId, array $query = []): array
+    {
+        return $this->requestJson(
+            'get',
+            "api/messages/v3/{$companyId}/rooms/{$roomId}/stories.json",
+            ['query' => $query]
+        );
+    }
+
+    /**
+     * @param int|string $companyId
+     * @param int|string $roomId
      * @param array $body
      *
      * @return array
