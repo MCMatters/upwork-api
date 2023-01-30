@@ -4,222 +4,110 @@ declare(strict_types=1);
 
 namespace McMatters\UpworkApi\Endpoints;
 
-/**
- * Class Message
- *
- * @package McMatters\UpworkApi\Endpoints
- */
 class Message extends Endpoint
 {
-    /**
-     * @param int|string $companyId
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function rooms($companyId, array $query = []): array
+    public function rooms(int|string $companyId, array $query = []): array
     {
-        return $this->requestJson(
-            'get',
-            "api/messages/v3/{$companyId}/rooms.json",
-            ['query' => $query]
-        );
+        return $this->httpClient
+            ->withQuery($query)
+            ->get("api/messages/v3/{$companyId}/rooms.json")
+            ->json();
     }
 
-    /**
-     * @param int|string $companyId
-     * @param int|string $roomId
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function getRoom($companyId, $roomId, array $query = []): array
-    {
-        return $this->requestJson(
-            'get',
-            "api/messages/v3/{$companyId}/rooms/{$roomId}.json",
-            ['query' => $query]
-        );
+    public function getRoom(
+        int|string $companyId,
+        int|string $roomId,
+        array $query = []
+    ): array {
+        return $this->httpClient
+            ->withQuery($query)
+            ->get("api/messages/v3/{$companyId}/rooms/{$roomId}.json")
+            ->json();
     }
 
-    /**
-     * @param int|string $companyId
-     * @param int|string $offerId
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
     public function getRoomByOfferId(
-        $companyId,
-        $offerId,
+        int|string $companyId,
+        int|string $offerId,
         array $query = []
     ): array {
-        return $this->requestJson(
-            'get',
-            "api/messages/v3/{$companyId}/rooms/offers/{$offerId}.json",
-            ['query' => $query]
-        );
+        return $this->httpClient
+            ->withQuery($query)
+            ->get("api/messages/v3/{$companyId}/rooms/offers/{$offerId}.json")
+            ->json();
     }
 
-    /**
-     * @param int|string $companyId
-     * @param int|string $applicationId
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
     public function getRoomByApplicationId(
-        $companyId,
-        $applicationId,
+        int|string $companyId,
+        int|string $applicationId,
         array $query = []
     ): array {
-        return $this->requestJson(
-            'get',
-            "api/messages/v3/{$companyId}/rooms/applications/{$applicationId}.json",
-            ['query' => $query]
-        );
+        return $this->httpClient
+            ->withQuery($query)
+            ->get("api/messages/v3/{$companyId}/rooms/applications/{$applicationId}.json")
+            ->json();
     }
 
-    /**
-     * @param int|string $companyId
-     * @param int|string $contractId
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
     public function getRoomByContractId(
-        $companyId,
-        $contractId,
+        int|string $companyId,
+        int|string $contractId,
         array $query = []
     ): array {
-        return $this->requestJson(
-            'get',
-            "api/messages/v3/{$companyId}/rooms/contracts/{$contractId}.json",
-            ['query' => $query]
-        );
+        return $this->httpClient
+            ->withQuery($query)
+            ->get("api/messages/v3/{$companyId}/rooms/contracts/{$contractId}.json")
+            ->json();
     }
 
-    /**
-     * @param int|string $companyId
-     * @param array $body
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function createRoom($companyId, array $body): array
+    public function createRoom(int|string $companyId, array $body): array
     {
-        return $this->requestJson(
-            'post',
-            "api/messages/v3/{$companyId}/rooms.json",
-            ['json' => $body]
-        );
+        return $this->httpClient
+            ->withJson($body)
+            ->post("api/messages/v3/{$companyId}/rooms.json")
+            ->json();
     }
 
-    /**
-     * @param int|string $companyId
-     * @param int|string $roomId
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function messages($companyId, $roomId, array $query = []): array
-    {
-        return $this->requestJson(
-            'get',
-            "api/messages/v3/{$companyId}/rooms/{$roomId}/stories.json",
-            ['query' => $query]
-        );
+    public function messages(
+        int|string $companyId,
+        int|string $roomId,
+        array $query = []
+    ): array {
+        return $this->httpClient
+            ->withQuery($query)
+            ->get("api/messages/v3/{$companyId}/rooms/{$roomId}/stories.json")
+            ->json();
     }
 
-    /**
-     * @param int|string $companyId
-     * @param int|string $roomId
-     * @param array $body
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function sendMessageToRoom($companyId, $roomId, array $body): array
-    {
-        return $this->requestJson(
-            'post',
-            "api/messages/v3/{$companyId}/rooms/{$roomId}/stories.json",
-            ['json' => $body]
-        );
-    }
-
-    /**
-     * @param int|string $companyId
-     * @param int|string $roomId
-     * @param int|string $userId
-     * @param array $body
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function updateRoomSettings(
-        $companyId,
-        $roomId,
-        $userId,
+    public function sendMessageToRoom(
+        int|string $companyId,
+        int|string $roomId,
         array $body
     ): array {
-        return $this->requestJson(
-            'put',
-            "api/messages/v3/{$companyId}/rooms/{$roomId}/users/{$userId}.json",
-            ['json' => $body]
-        );
+        return $this->httpClient
+            ->withJson($body)
+            ->post("api/messages/v3/{$companyId}/rooms/{$roomId}/stories.json")
+            ->json();
     }
 
-    /**
-     * @param int|string $companyId
-     * @param int|string $roomId
-     * @param array $body
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function updateRoomMetadata($companyId, $roomId, array $body): array
-    {
-        return $this->requestJson(
-            'put',
-            "api/messages/v3/{$companyId}/rooms/{$roomId}.json",
-            ['json' => ['metadata' => $body]]
-        );
+    public function updateRoomSettings(
+        int|string $companyId,
+        int|string $roomId,
+        int|string $userId,
+        array $body
+    ): array {
+        return $this->httpClient
+            ->withJson($body)
+            ->put("api/messages/v3/{$companyId}/rooms/{$roomId}/users/{$userId}.json")
+            ->json();
+    }
+
+    public function updateRoomMetadata(
+        int|string $companyId,
+        int|string $roomId,
+        array $body
+    ): array {
+        return $this->httpClient
+            ->withJson(['metadata' => $body])
+            ->put("api/messages/v3/{$companyId}/rooms/{$roomId}.json")
+            ->json();
     }
 }

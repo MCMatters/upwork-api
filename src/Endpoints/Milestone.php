@@ -4,138 +4,59 @@ declare(strict_types=1);
 
 namespace McMatters\UpworkApi\Endpoints;
 
-/**
- * Class Milestone
- *
- * @package McMatters\UpworkApi\Endpoints
- */
 class Milestone extends Endpoint
 {
-    /**
-     * @param int|string $contractReference
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function getActive($contractReference): array
+    public function getActive(int|string $contractReference): array
     {
-        return $this->requestJson(
-            'get',
-            "api/hr/v3/fp/milestones/statuses/active/contracts/{$contractReference}.json"
-        );
+        return $this->httpClient
+            ->get("api/hr/v3/fp/milestones/statuses/active/contracts/{$contractReference}.json")
+            ->json();
     }
 
-    /**
-     * @param int $id
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
     public function submissions(int $id, array $query = []): array
     {
-        return $this->requestJson(
-            'get',
-            "api/hr/v3/fp/milestones/{$id}/submissions.json",
-            ['query' => $query]
-        );
+        return $this->httpClient
+            ->withQuery($query)
+            ->get("api/hr/v3/fp/milestones/{$id}/submissions.json")
+            ->json();
     }
 
-    /**
-     * @param array $body
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
     public function create(array $body): array
     {
-        return $this->requestJson(
-            'post',
-            'api/hr/v3/fp/milestones.json',
-            ['json' => $body]
-        );
+        return $this->httpClient
+            ->withJson($body)
+            ->post('api/hr/v3/fp/milestones.json')
+            ->json();
     }
 
-    /**
-     * @param int $id
-     * @param array $body
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
     public function update(int $id, array $body): array
     {
-        return $this->requestJson(
-            'put',
-            "api/hr/v3/fp/milestones/{$id}.json",
-            ['json' => $body]
-        );
+        return $this->httpClient
+            ->withJson($body)
+            ->put("api/hr/v3/fp/milestones/{$id}.json")
+            ->json();
     }
 
-    /**
-     * @param int $id
-     * @param array $body
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
     public function activate(int $id, array $body = []): array
     {
-        return $this->requestJson(
-            'put',
-            "api/hr/v3/fp/milestones/{$id}/activate.json",
-            ['json' => $body]
-        );
+        return $this->httpClient
+            ->withJson($body)
+            ->put("api/hr/v3/fp/milestones/{$id}/activate.json")
+            ->json();
     }
 
-    /**
-     * @param int $id
-     * @param array $body
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
     public function approve(int $id, array $body): array
     {
-        return $this->requestJson(
-            'put',
-            "api/hr/v3/fp/milestones/{$id}/approve.json",
-            ['json' => $body]
-        );
+        return $this->httpClient
+            ->withJson($body)
+            ->put("api/hr/v3/fp/milestones/{$id}/approve.json")
+            ->json();
     }
 
-    /**
-     * @param int $id
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
     public function delete(int $id): array
     {
-        return $this->requestJson(
-            'delete',
-            "api/hr/v3/fp/milestones/{$id}.json"
-        );
+        return $this->httpClient
+            ->delete("api/hr/v3/fp/milestones/{$id}.json")
+            ->json();
     }
 }

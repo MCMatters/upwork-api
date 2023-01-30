@@ -4,69 +4,31 @@ declare(strict_types=1);
 
 namespace McMatters\UpworkApi\Endpoints;
 
-/**
- * Class EarningReport
- *
- * @package McMatters\UpworkApi\Endpoints
- */
 class EarningReport extends Endpoint
 {
-    /**
-     * @param int|string $providerReference
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function getByFreelancer($providerReference, array $query): array
+    public function getByFreelancer(int|string $providerReference, array $query): array
     {
-        return $this->requestJson(
-            'get',
-            "gds/finreports/v2/providers/{$providerReference}/earnings",
-            ['query' => $query]
-        );
+        return $this->httpClient
+            ->withQuery($query)
+            ->get("gds/finreports/v2/providers/{$providerReference}/earnings")
+            ->json();
     }
 
-    /**
-     * @param int|string $buyerTeamReference
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function getByBuyersTeam($buyerTeamReference, array $query): array
+    public function getByBuyersTeam(int|string $buyerTeamReference, array $query): array
     {
-        return $this->requestJson(
-            'get',
-            "gds/finreports/v2/buyer_teams/{$buyerTeamReference}/earnings",
-            ['query' => $query]
-        );
+        return $this->httpClient
+            ->withQuery($query)
+            ->get("gds/finreports/v2/buyer_teams/{$buyerTeamReference}/earnings")
+            ->json();
     }
 
-    /**
-     * @param int|string $buyerCompanyReference
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
     public function getByBuyersCompany(
-        $buyerCompanyReference,
+        int|string $buyerCompanyReference,
         array $query
     ): array {
-        return $this->requestJson(
-            'get',
-            "gds/finreports/v2/buyer_companies/{$buyerCompanyReference}/earnings",
-            ['query' => $query]
-        );
+        return $this->httpClient
+            ->withQuery($query)
+            ->get("gds/finreports/v2/buyer_companies/{$buyerCompanyReference}/earnings")
+            ->json();
     }
 }

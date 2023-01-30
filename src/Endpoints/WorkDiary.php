@@ -4,55 +4,29 @@ declare(strict_types=1);
 
 namespace McMatters\UpworkApi\Endpoints;
 
-use function date, implode, is_array;
+use function date;
+use function implode;
+use function is_array;
 
 use const null;
 
-/**
- * Class WorkDiary
- *
- * @package McMatters\UpworkApi\Endpoints
- */
 class WorkDiary extends Endpoint
 {
-    /**
-     * @param string $companyId
-     * @param string|null $date
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
     public function get(
         string $companyId,
-        string $date = null,
+        ?string $date = null,
         array $query = []
     ): array {
-        $date = $date ?? date('Ymd');
+        $date ??= date('Ymd');
 
-        return $this->requestJson(
-            'get',
-            "api/team/v3/workdiaries/companies/{$companyId}/{$date}.json",
-            ['query' => $query]
-        );
+        return $this->httpClient
+            ->withQuery($query)
+            ->get("api/team/v3/workdiaries/companies/{$companyId}/{$date}.json")
+            ->json();
     }
 
-    /**
-     * @param array|string $contractIds
-     * @param string|null $date
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
     public function getByContracts(
-        $contractIds,
+        array|string $contractIds,
         string $date = null,
         array $query = []
     ): array {
@@ -60,29 +34,17 @@ class WorkDiary extends Endpoint
             ? implode(';', $contractIds)
             : $contractIds;
 
-        $date = $date ?? date('Ymd');
+        $date ??= date('Ymd');
 
-        return $this->requestJson(
-            'get',
-            "api/team/v3/workdiaries/contracts/{$contractIds}/{$date}.json",
-            ['query' => $query]
-        );
+        return $this->httpClient
+            ->withQuery($query)
+            ->get("api/team/v3/workdiaries/contracts/{$contractIds}/{$date}.json")
+            ->json();
     }
 
-    /**
-     * @param string $contractId
-     * @param string|null $date
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
     public function getByContract(
         string $contractId,
-        string $date = null,
+        ?string $date = null,
         array $query = []
     ): array {
         return $this->getByContracts($contractId, $date, $query);

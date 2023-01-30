@@ -4,127 +4,62 @@ declare(strict_types=1);
 
 namespace McMatters\UpworkApi\Endpoints;
 
-/**
- * Class Report
- *
- * @package McMatters\UpworkApi\Endpoints
- */
 class Report extends Endpoint
 {
-    /**
-     * @param int|string $companyId
-     * @param int|string $teamId
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function getHoursByTeam($companyId, $teamId, array $query): array
-    {
-        return $this->requestJson(
-            'get',
-            "gds/timereports/v1/companies/{$companyId}/teams/{$teamId}/hours",
-            ['query' => $query]
-        );
+    public function getHoursByTeam(
+        int|string $companyId,
+        int|string $teamId,
+        array $query
+    ): array {
+        return $this->httpClient
+            ->withQuery($query)
+            ->get("gds/timereports/v1/companies/{$companyId}/teams/{$teamId}/hours")
+            ->json();
     }
 
-    /**
-     * @param int|string $companyId
-     * @param int|string $teamId
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function getByTeam($companyId, $teamId, array $query): array
-    {
-        return $this->requestJson(
-            'get',
-            "gds/timereports/v1/companies/{$companyId}/teams/{$teamId}",
-            ['query' => $query]
-        );
+    public function getByTeam(
+        int|string $companyId,
+        int|string $teamId,
+        array $query
+    ): array {
+        return $this->httpClient
+            ->withQuery($query)
+            ->get("gds/timereports/v1/companies/{$companyId}/teams/{$teamId}")
+            ->json();
     }
 
-    /**
-     * @param int|string $companyId
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function getByCompany($companyId, array $query): array
+    public function getByCompany(int|string $companyId, array $query): array
     {
-        return $this->requestJson(
-            'get',
-            "gds/timereports/v1/companies/{$companyId}",
-            ['query' => $query]
-        );
+        return $this->httpClient
+            ->withQuery($query)
+            ->get("gds/timereports/v1/companies/{$companyId}")
+            ->json();
     }
 
-    /**
-     * @param int|string $companyId
-     * @param int|string $agencyId
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function getByAgency($companyId, $agencyId, array $query): array
-    {
-        return $this->requestJson(
-            'get',
-            "gds/timereports/v1/companies/{$companyId}/agencies/{$agencyId}",
-            ['query' => $query]
-        );
+    public function getByAgency(
+        int|string $companyId,
+        int|string $agencyId,
+        array $query
+    ): array {
+        return $this->httpClient
+            ->withQuery($query)
+            ->get("gds/timereports/v1/companies/{$companyId}/agencies/{$agencyId}")
+            ->json();
     }
 
-    /**
-     * @param int|string $userId
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function getHoursByFreelancer($userId, array $query): array
+    public function getHoursByFreelancer(int|string $userId, array $query): array
     {
-        return $this->requestJson(
-            'get',
-            "gds/timereports/v1/providers/{$userId}/hours",
-            ['query' => $query]
-        );
+        return $this->httpClient
+            ->withQuery($query)
+            ->get("gds/timereports/v1/providers/{$userId}/hours")
+            ->json();
     }
 
-    /**
-     * @param int|string $userId
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function getByFreelancer($userId, array $query): array
+    public function getByFreelancer(int|string $userId, array $query): array
     {
-        return $this->requestJson(
-            'get',
-            "gds/timereports/v1/providers/{$userId}",
-            ['query' => $query]
-        );
+        return $this->httpClient
+            ->withQuery($query)
+            ->get("gds/timereports/v1/providers/{$userId}")
+            ->json();
     }
 }

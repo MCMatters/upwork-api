@@ -4,67 +4,29 @@ declare(strict_types=1);
 
 namespace McMatters\UpworkApi\Endpoints;
 
-/**
- * Class Contract
- *
- * @package McMatters\UpworkApi\Endpoints
- */
 class Contract extends Endpoint
 {
-    /**
-     * @param int|string $reference
-     * @param array $body
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function suspend($reference, array $body = []): array
+    public function suspend(int|string $reference, array $body = []): array
     {
-        return $this->requestJson(
-            'put',
-            "api/hr/v2/contracts/{$reference}/suspend.json",
-            ['json' => $body]
-        );
+        return $this->httpClient
+            ->withJson($body)
+            ->put("api/hr/v2/contracts/{$reference}/suspend.json")
+            ->json();
     }
 
-    /**
-     * @param int|string $reference
-     * @param array $body
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function restart($reference, array $body = []): array
+    public function restart(int|string $reference, array $body = []): array
     {
-        return $this->requestJson(
-            'put',
-            "api/hr/v2/contracts/{$reference}/restart.json",
-            ['json' => $body]
-        );
+        return $this->httpClient
+            ->withJson($body)
+            ->put("api/hr/v2/contracts/{$reference}/restart.json")
+            ->json();
     }
 
-    /**
-     * @param int|string $reference
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function end($reference, array $query): array
+    public function end(int|string $reference, array $query): array
     {
-        return $this->requestJson(
-            'delete',
-            "api/hr/v2/contracts/{$reference}.json",
-            ['query' => $query]
-        );
+        return $this->httpClient
+            ->withQuery($query)
+            ->delete("api/hr/v2/contracts/{$reference}.json")
+            ->json();
     }
 }

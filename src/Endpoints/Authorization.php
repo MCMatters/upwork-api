@@ -4,88 +4,37 @@ declare(strict_types=1);
 
 namespace McMatters\UpworkApi\Endpoints;
 
-use function explode, header, readline, trim;
+use function header;
+use function readline;
+use function trim;
 
-use const false, null, true;
+use const false;
 
-/**
- * Class Authorization
- *
- * @package McMatters\UpworkApi\Endpoints
- */
 class Authorization extends Endpoint
 {
-    /**
-     * Authorization constructor.
-     *
-     * @param string $consumerKey
-     * @param string $consumerSecret
-     */
     public function __construct(
-        string $consumerKey,
-        string $consumerSecret
+        string $clientId,
+        string $clientSecret
     ) {
-        $this->consumerKey = $consumerKey;
-        $this->consumerSecret = $consumerSecret;
+        $this->clientId = $clientId;
+        $this->clientSecret = $clientSecret;
         $this->setHttpClient();
     }
 
-    /**
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function getRequestToken(): array
-    {
-        return $this->parseStringResponse(
-            $this->request('post', 'api/auth/v1/oauth/token/request')->getBody()
-        );
-    }
-
-    /**
-     * @param string|null $token
-     * @param string|null $callback
-     *
-     * @return string
-     */
-    public function getVerifierUrl(
-        string $token = null,
-        string $callback = null
+    public function authorize(
+        string $redirectUrl,
+        bool $inConsole = false
     ): string {
-        if (null === $token) {
-            $tokens = $this->getRequestToken();
+        $url = (clone $this->httpClient)->getFullUrl('ab/account-security/oauth2/authorize');
 
-            $token = $tokens['oauth_token'];
-        }
-
-        $url = $this->httpClient->getFullUrl('services/api/auth')."?oauth_token={$token}";
-
-        if (null !== $callback) {
-            $url .= "&oauth_callback={$callback}";
-        }
-
-        return $url;
-    }
-
-    /**
-     * @param string|null $token
-     * @param bool $inConsole
-     * @param string|null $callback
-     *
-     * @return string
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function getVerifier(
-        string $token = null,
-        bool $inConsole = false,
-        string $callback = null
-    ): string {
-        $url = $this->getVerifierUrl($token, $callback);
+        $url .= '?'.http_build_query([
+                'response_type' => 'code',
+                'client_id' => $this->clientId,
+                'redirect_url' => $redirectUrl,
+            ]);
 
         if ($inConsole) {
-            echo "Please visit\n{$url}\nand paste here 'oauth_verifier' from url \n";
+            echo "Please visit\n{$url}\nand paste here 'code' from url \n";
 
             return trim(readline());
         }
@@ -94,69 +43,38 @@ class Authorization extends Endpoint
         exit;
     }
 
-    /**
-     * @param string $token
-     * @param string $secret
-     * @param string $verifier
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function getAccessToken(
-        string $token,
-        string $secret,
-        string $verifier
-    ): array {
-        $this->token = $token;
-        $this->secret = $secret;
-
-        return $this->parseStringResponse(
-            $this->request(
-                'post',
-                'api/auth/v1/oauth/token/access',
-                ['headers' => ['oauth_verifier' => $verifier]]
-            )->getBody()
-        );
+    public function accessToken(string $redirectUri, string $code): array
+    {
+        return $this->httpClient
+            ->withHeaders([
+                'Content-type' => 'application/x-www-form-urlencoded',
+            ])
+            ->post('api/v3/oauth2/token', [
+                'body' => [
+                    'grant_type' => 'authorization_code',
+                    'client_id' => $this->clientId,
+                    'client_secret' => $this->clientSecret,
+                    'code' => $code,
+                    'redirect_uri' => $redirectUri,
+                ],
+            ])
+            ->json();
     }
 
-    /**
-     * @param bool $inConsole
-     * @param string|null $callback
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function authorize(bool $inConsole = true, string $callback = null): array
+    public function refreshToken(string $refreshToken): array
     {
-        $tokens = $this->getRequestToken();
-
-        $verifier = $this->getVerifier($tokens['oauth_token'], $inConsole, $callback);
-
-        return $this->getAccessToken(
-            $tokens['oauth_token'],
-            $tokens['oauth_token_secret'],
-            $verifier
-        );
-    }
-
-    /**
-     * @param string $response
-     *
-     * @return array
-     */
-    protected function parseStringResponse(string $response): array
-    {
-        $body = [];
-
-        foreach (explode('&', $response) as $item) {
-            [$key, $value] = explode('=', $item);
-            $body[$key] = $value;
-        }
-
-        return $body;
+        return $this->httpClient
+            ->withHeaders([
+                'Content-Type' => 'application/x-www-form-urlencoded',
+            ])
+            ->post('api/v3/oauth2/token', [
+                'body' => [
+                    'grant_type' => 'refresh_token',
+                    'client_id' => $this->clientId,
+                    'client_secret' => $this->clientSecret,
+                    'refresh_token' => $refreshToken,
+                ],
+            ])
+            ->json();
     }
 }

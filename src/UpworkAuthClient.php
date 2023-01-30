@@ -6,99 +6,31 @@ namespace McMatters\UpworkApi;
 
 use McMatters\UpworkApi\Endpoints\Authorization;
 
-use const false, null, true;
+use const false;
 
-/**
- * Class UpworkAuthClient
- *
- * @package McMatters\UpworkApi
- */
 class UpworkAuthClient
 {
-    /**
-     * @var \McMatters\UpworkApi\Endpoints\Authorization
-     */
-    protected $auth;
+    protected Authorization $auth;
 
-    /**
-     * UpworkAuthClient constructor.
-     *
-     * @param string $consumerKey
-     * @param string $consumerSecret
-     */
-    public function __construct(string $consumerKey, string $consumerSecret)
+    public function __construct(string $clientId, string $clientSecret)
     {
-        $this->auth = new Authorization($consumerKey, $consumerSecret);
+        $this->auth = new Authorization($clientId, $clientSecret);
     }
 
-    /**
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function getRequestToken(): array
-    {
-        return $this->auth->getRequestToken();
-    }
-
-    /**
-     * @param string|null $oauthToken
-     * @param bool $inConsole
-     *
-     * @return string
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function getVerifier(
-        string $oauthToken = null,
+    public function authorize(
+        string $redirectUrl,
         bool $inConsole = false
     ): string {
-        return $this->auth->getVerifier($oauthToken, $inConsole);
+        return $this->auth->authorize($redirectUrl, $inConsole);
     }
 
-    /**
-     * @param string|null $oauthToken
-     * @param string|null $callback
-     *
-     * @return string
-     */
-    public function getVerifierUrl(
-        string $oauthToken = null,
-        string $callback = null
-    ): string {
-        return $this->auth->getVerifierUrl($oauthToken, $callback);
-    }
-
-    /**
-     * @param string $token
-     * @param string $secret
-     * @param string $verifier
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function getAccessToken(
-        string $token,
-        string $secret,
-        string $verifier
-    ): array {
-        return $this->auth->getAccessToken($token, $secret, $verifier);
-    }
-
-    /**
-     * @param bool $inConsole
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function authorize(bool $inConsole = true): array
+    public function accessToken(string $redirectUri, string $code): array
     {
-        return $this->auth->authorize($inConsole);
+        return $this->auth->accessToken($redirectUri, $code);
+    }
+
+    public function refreshToken(string $refreshToken): array
+    {
+        return $this->auth->refreshToken($refreshToken);
     }
 }

@@ -4,147 +4,79 @@ declare(strict_types=1);
 
 namespace McMatters\UpworkApi\Endpoints;
 
-use function implode, is_array;
+use function implode;
+use function is_array;
 
-/**
- * Class TeamActivity
- *
- * @package McMatters\UpworkApi\Endpoints
- */
 class TeamActivity extends Endpoint
 {
-    /**
-     * @param int|string $companyId
-     * @param int|string $teamId
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function list($companyId, $teamId, array $query = []): array
-    {
-        return $this->requestJson(
-            'get',
-            "api/otask/v1/tasks/companies/{$companyId}/teams/{$teamId}/tasks.json",
-            ['query' => $query]
-        );
+    public function list(
+        int|string $companyId,
+        int|string $teamId,
+        array $query = []
+    ): array {
+        return $this->httpClient
+            ->withQuery($query)
+            ->get("api/otask/v1/tasks/companies/{$companyId}/teams/{$teamId}/tasks.json")
+            ->json();
     }
 
-    /**
-     * @param int|string $companyId
-     * @param int|string $teamId
-     * @param array|string $code
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function getByCode($companyId, $teamId, $code, array $query = []): array
-    {
+    public function getByCode(
+        int|string $companyId,
+        int|string $teamId,
+        array|string $code,
+        array $query = []
+    ): array {
         $code = is_array($code) ? implode(';', $code) : $code;
 
-        return $this->requestJson(
-            'get',
-            "api/otask/v1/tasks/companies/{$companyId}/teams/{$teamId}/tasks/{$code}.json",
-            ['query' => $query]
-        );
+        return $this->httpClient
+            ->withQuery($query)
+            ->get("api/otask/v1/tasks/companies/{$companyId}/teams/{$teamId}/tasks/{$code}.json")
+            ->json();
     }
 
-    /**
-     * @param int|string $companyId
-     * @param int|string $teamId
-     * @param string $code
-     * @param string $description
-     * @param array $data
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
     public function create(
-        $companyId,
-        $teamId,
+        int|string $companyId,
+        int|string $teamId,
         string $code,
         string $description,
         array $data = []
     ): array {
-        return $this->requestJson(
-            'post',
-            "api/otask/v1/tasks/companies/{$companyId}/teams/{$teamId}/tasks.json",
-            ['json' => ['code' => $code, 'description' => $description] + $data]
-        );
+        return $this->httpClient
+            ->withJson(['code' => $code, 'description' => $description] + $data)
+            ->post("api/otask/v1/tasks/companies/{$companyId}/teams/{$teamId}/tasks.json")
+            ->json();
     }
 
-    /**
-     * @param int|string $companyId
-     * @param int|string $teamId
-     * @param string $code
-     * @param string $description
-     * @param array $data
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
     public function update(
-        $companyId,
-        $teamId,
+        int|string $companyId,
+        int|string $teamId,
         string $code,
         string $description,
         array $data = []
     ): array {
-        return $this->requestJson(
-            'put',
-            "api/otask/v1/tasks/companies/{$companyId}/teams/{$teamId}/tasks/{$code}.json",
-            ['json' => ['description' => $description] + $data]
-        );
+        return $this->httpClient
+            ->withJson(['description' => $description] + $data)
+            ->put("api/otask/v1/tasks/companies/{$companyId}/teams/{$teamId}/tasks/{$code}.json")
+            ->json();
     }
 
-    /**
-     * @param int|string $companyId
-     * @param int|string $teamId
-     * @param string $code
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function archive($companyId, $teamId, string $code): array
-    {
-        return $this->requestJson(
-            'put',
-            "api/otask/v1/tasks/companies/{$companyId}/teams/{$teamId}/archive/{$code}.json"
-        );
+    public function archive(
+        int|string $companyId,
+        int|string $teamId,
+        string $code
+    ): array {
+        return $this->httpClient
+            ->put("api/otask/v1/tasks/companies/{$companyId}/teams/{$teamId}/archive/{$code}.json")
+            ->json();
     }
 
-    /**
-     * @param int|string $companyId
-     * @param int|string $teamId
-     * @param string $code
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     * @throws \McMatters\Ticl\Exceptions\JsonDecodingException
-     * @throws \McMatters\Ticl\Exceptions\RequestException
-     */
-    public function unarchive($companyId, $teamId, string $code): array
-    {
-        return $this->requestJson(
-            'put',
-            "api/otask/v1/tasks/companies/{$companyId}/teams/{$teamId}/unarchive/{$code}.json"
-        );
+    public function unarchive(
+        int|string $companyId,
+        int|string $teamId,
+        string $code
+    ): array {
+        return $this->httpClient
+            ->put("api/otask/v1/tasks/companies/{$companyId}/teams/{$teamId}/unarchive/{$code}.json")
+            ->json();
     }
 }
