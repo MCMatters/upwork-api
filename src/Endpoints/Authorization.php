@@ -11,6 +11,7 @@ use function readline;
 use function trim;
 
 use const false;
+use const PHP_QUERY_RFC3986;
 
 class Authorization extends Endpoint
 {
