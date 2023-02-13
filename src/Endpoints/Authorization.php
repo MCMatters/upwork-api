@@ -28,13 +28,7 @@ class Authorization extends Endpoint
         string $redirectUrl,
         bool $inConsole = false
     ): string {
-        $url = (clone $this->httpClient)->getFullUrl('ab/account-security/oauth2/authorize');
-
-        $url .= '?'.http_build_query([
-                'response_type' => 'code',
-                'client_id' => $this->clientId,
-                'redirect_url' => $redirectUrl,
-            ]);
+        $url = $this->getAuthorizeUrl($redirectUrl);
 
         if ($inConsole) {
             echo "Please visit\n{$url}\nand paste here 'code' from url \n";
@@ -79,6 +73,17 @@ class Authorization extends Endpoint
                 ],
             ])
             ->json();
+    }
+
+    public function getAuthorizeUrl(string $redirectUrl): string
+    {
+        $url = (clone $this->httpClient)->getFullUrl('ab/account-security/oauth2/authorize');
+
+        return "{$url}?".http_build_query([
+                'response_type' => 'code',
+                'client_id' => $this->clientId,
+                'redirect_url' => $redirectUrl,
+            ]);
     }
 
     protected function setHttpClient(): void
