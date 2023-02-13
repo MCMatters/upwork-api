@@ -25,10 +25,10 @@ class Authorization extends Endpoint
     }
 
     public function authorize(
-        string $redirectUrl,
+        string $redirectUri,
         bool $inConsole = false
     ): string {
-        $url = $this->getAuthorizeUrl($redirectUrl);
+        $url = $this->getAuthorizeUrl($redirectUri);
 
         if ($inConsole) {
             echo "Please visit\n{$url}\nand paste here 'code' from url \n";
@@ -75,14 +75,14 @@ class Authorization extends Endpoint
             ->json();
     }
 
-    public function getAuthorizeUrl(string $redirectUrl): string
+    public function getAuthorizeUrl(string $redirectUri): string
     {
         $url = (clone $this->httpClient)->getFullUrl('ab/account-security/oauth2/authorize');
 
         return "{$url}?".http_build_query([
                 'response_type' => 'code',
                 'client_id' => $this->clientId,
-                'redirect_url' => $redirectUrl,
+                'redirect_url' => $redirectUri,
             ]);
     }
 

@@ -18,10 +18,10 @@ class UpworkAuthClient
     }
 
     public function authorize(
-        string $redirectUrl,
+        string $redirectUri,
         bool $inConsole = false
     ): string {
-        return $this->auth->authorize($redirectUrl, $inConsole);
+        return $this->auth->authorize($redirectUri, $inConsole);
     }
 
     public function accessToken(string $redirectUri, string $code): array
@@ -32,5 +32,10 @@ class UpworkAuthClient
     public function refreshToken(string $refreshToken): array
     {
         return $this->auth->refreshToken($refreshToken);
+    }
+
+    public function getAuthorizeUrl(string $redirectUri): string
+    {
+        return $this->auth->getAuthorizeUrl($redirectUri);
     }
 }
