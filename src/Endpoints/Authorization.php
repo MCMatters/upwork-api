@@ -62,7 +62,7 @@ class Authorization extends Endpoint
     {
         return $this->httpClient
             ->withHeaders([
-                'Content-Type' => 'application/x-www-form-urlencoded',
+                'Content-type' => 'application/x-www-form-urlencoded',
             ])
             ->post('api/v3/oauth2/token', [
                 'body' => [
